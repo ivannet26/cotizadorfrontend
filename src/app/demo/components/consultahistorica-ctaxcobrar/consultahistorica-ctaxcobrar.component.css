@@ -34,8 +34,8 @@
 /* Anchos específicos para cada columna */
 ::ng-deep .p-datatable th:nth-child(1),
 ::ng-deep .p-datatable td:nth-child(1) {
-    width: 100px;
-    min-width: 100px;
+    width: 90px;
+    min-width: 90px;
 }
 
 /* Razón Social - PERMITE MÚLTIPLES LÍNEAS */
@@ -52,38 +52,43 @@
     text-align: left; /* Opcional: alinear a la izquierda */
     padding: 6px 4px; /* Más espacio vertical */
 }
-
+/*tip.doc*/
 ::ng-deep .p-datatable th:nth-child(3),
 ::ng-deep .p-datatable td:nth-child(3) {
     width: 80px;
     min-width: 80px;
-    white-space: nowrap;
+      white-space: normal !important; /* Permite múltiples líneas */
+    word-wrap: break-word !important;
+    word-break: break-word !important;
 }
-
+/*numero comprobante*/
 ::ng-deep .p-datatable th:nth-child(4),
 ::ng-deep .p-datatable td:nth-child(4) {
-    width: 110px;
-    min-width: 110px;
-    white-space: nowrap;
-}
-
-::ng-deep .p-datatable th:nth-child(5),
-::ng-deep .p-datatable td:nth-child(5) {
     width: 90px;
     min-width: 90px;
     white-space: nowrap;
 }
-
+/*fecha */
+::ng-deep .p-datatable th:nth-child(5),
+::ng-deep .p-datatable td:nth-child(5) {
+   width: 70px;
+    min-width: 70px;
+    
+    white-space: nowrap;
+}
+/*impor.factura*/
 ::ng-deep .p-datatable th:nth-child(6),
 ::ng-deep .p-datatable td:nth-child(6) {
     width: 90px;
     min-width: 90px;
 }
 
+/* 7. Moneda (CORREGIDO - Estaba en nth-child(5) y era demasiado ancho) */
 ::ng-deep .p-datatable th:nth-child(7),
 ::ng-deep .p-datatable td:nth-child(7) {
-    width: 80px;
-    min-width: 80px;
+    width: 90px; /* Ancho ajustado para 'S/' o '$' */
+    min-width: 90px;
+    white-space: nowrap;
 }
 
 ::ng-deep .p-datatable th:nth-child(8),
