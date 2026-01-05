@@ -211,7 +211,7 @@ export class CabecerapresupuestoComponent implements OnInit {
             },
             
         };
-        
+
         this.router.navigate(['Home/detalle-presupuesto'], navigationExtras);
     }
     verVouchercontable(presupuesto: cabeceraPresupuesto) {
@@ -320,8 +320,12 @@ export class CabecerapresupuestoComponent implements OnInit {
                                 Fecha: formattedDate,
                                 motivo: this.nuevoPresupuesto.ban01Descripcion,
                                 nombreMedioPago: nombreMedioPago,
+                                bancoCodMedioPago: this.nuevoPresupuesto.ban01mediopago
                             },
                         };
+                        console.log("lectura de navigationExtras desde metodo guardarNuevoPresupuesto");
+                        console.log("nivagation extras , bancoCodMedioPago");
+                        console.log(navigationExtras.state.bancoCodMedioPago);
                         this.router.navigate(
                             ['Home/detalle-presupuesto'],
                             navigationExtras

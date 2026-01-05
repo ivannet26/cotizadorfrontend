@@ -87,6 +87,9 @@ export class DetallepresupuestoComponent implements OnInit {
         const navigation = router.getCurrentNavigation();
         if (navigation?.extras?.state) {
             this.navigationData = navigation.extras.state;
+             this.bancoCodMedioPago = this.navigationData.bancoCodMedioPago;
+            console.log("valor de variable bancoCodMedioPago");
+            console.log(this.bancoCodMedioPago);
         } else {
             this.router.navigate(['Home/presupuesto']);
         }
@@ -165,8 +168,8 @@ export class DetallepresupuestoComponent implements OnInit {
         this.motivo = this.navigationData?.motivo || '';
 
         this.medio = this.navigationData?.nombreMedioPago || '';
-        
         this.bancoCodMedioPago = this.navigationData?.bancoCodMedioPago;
+       
     }
 
     calculateGroupTotals() {
@@ -948,23 +951,24 @@ export class DetallepresupuestoComponent implements OnInit {
     }
     
     generarArchivoPago(){
-        console.log("codigo banco cod medio pago");
+        console.log("evento generarArchivoPago");
         console.log(this.bancoCodMedioPago);
         if(this.bancoCodMedioPago == '01'){
-            //banco interbank
-            this.generaArchivoInterbankCab();
-            this.generaArchivoInterbankDet();
-        }else if(this.bancoCodMedioPago == '02'){
+           //banco BBVA falta definir metodos  y codificacion  para el archivo 
+             
+       
+        }else if(this.bancoCodMedioPago == '05'){
             //banco banbif , codigo implementado pero con observaciones del resultado
             this.generaArchivoBIFCab();
             //this.generaArchivoBIFDet();
-        }else if(this.bancoCodMedioPago == '03'){
+        }else if(this.bancoCodMedioPago == '06'){
             //banco BCP  falta implementa codigo en los metodo
             this.generaArchivoBCPCab();
             this.generaArchivoBCPDet();
         }else if(this.bancoCodMedioPago == '04'){
-            //banco BBVA falta definir metodos  y codificacion  para el archivo 
-            
+            //banco interbank
+                 this.generaArchivoInterbankCab();
+            this.generaArchivoInterbankDet();
         }
     }
     generaArchivoBIFCab(){
