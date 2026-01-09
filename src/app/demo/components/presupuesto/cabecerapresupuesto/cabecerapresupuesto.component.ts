@@ -211,7 +211,8 @@ export class CabecerapresupuestoComponent implements OnInit {
             },
             
         };
-
+        console.log("datos de cabecera navigation :");
+        console.log(navigationExtras);
         this.router.navigate(['Home/detalle-presupuesto'], navigationExtras);
     }
     verVouchercontable(presupuesto: cabeceraPresupuesto) {
@@ -304,6 +305,7 @@ export class CabecerapresupuestoComponent implements OnInit {
                         );
 
                         let nombreMedioPago = '';
+                        let codigoBancoPago = '';
                         if (this.nuevoPresupuesto.ban01mediopago) {
                             const medioPago = this.medioPagoLista.find(
                                 (mp) =>
@@ -312,6 +314,8 @@ export class CabecerapresupuestoComponent implements OnInit {
                             );
                             if (medioPago) {
                                 nombreMedioPago = medioPago.ban01Descripcion;
+                                codigoBancoPago =  medioPago.ban01CtaBanBancoCod;
+                                
                             }
                         }
                         const navigationExtras = {
@@ -320,12 +324,11 @@ export class CabecerapresupuestoComponent implements OnInit {
                                 Fecha: formattedDate,
                                 motivo: this.nuevoPresupuesto.ban01Descripcion,
                                 nombreMedioPago: nombreMedioPago,
-                                bancoCodMedioPago: this.nuevoPresupuesto.ban01mediopago
+                                bancoCodMedioPago: codigoBancoPago
                             },
                         };
-                        console.log("lectura de navigationExtras desde metodo guardarNuevoPresupuesto");
-                        console.log("nivagation extras , bancoCodMedioPago");
-                        console.log(navigationExtras.state.bancoCodMedioPago);
+                        console.log("datao de navegacion guardarNuevoPresupuesto");
+                        console.log(navigationExtras);
                         this.router.navigate(
                             ['Home/detalle-presupuesto'],
                             navigationExtras

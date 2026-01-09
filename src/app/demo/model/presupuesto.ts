@@ -97,6 +97,7 @@ export interface mediopago_lista {
     ban01Empresa: string;
     ban01IdTipoPago: string;
     ban01Descripcion: string;
+    ban01CtaBanBancoCod:string;
 }
 export interface insert_detalle {
     empresa: string;
@@ -295,6 +296,7 @@ export interface MedioPago {
     ban01Empresa: string;
     ban01IdTipoPago: string;
     ban01Descripcion: string;
+    ban01CtaBanBancoCod:string;
 }
 
 

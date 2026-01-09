@@ -19,6 +19,7 @@ import { BreadcrumbService } from 'src/app/demo/service/breadcrumb.service';
 import { ActualizarVouchercontableComponent } from "../actualizar-vouchercontable/actualizar-vouchercontable.component";
 import { RegContableDetService } from 'src/app/demo/service/reg-contable-det.service';
 import { verMensajeInformativo } from 'src/app/demo/components/utilities/funciones_utilitarias';
+import { group } from '@angular/animations';
 
 @Component({
     selector: 'app-vouchercontable',
@@ -260,5 +261,40 @@ export class VouchercontableComponent implements OnInit {
                     });
             },
         });
+    }
+
+    generarPDF(){
+        // Definimos las cabeceras
+        const headers = [
+            [
+                { text: 'Orden', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Tipo cuenta', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Cuenta desc.', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Cuenta Cte. Cod.', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Cuenta Cte. Desc.', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Tipo Doc. Desc.', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Num. Doc.', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Fecha Emisión', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Fecha Vencimiento', rowSpan: 2, style: 'tableHeader' },
+                { text: 'Tipo Cambio', rowSpan: 2, style: 'tableHeader' }, // 10
+                { text: 'Debe', rowSpan: 2, style: 'tableHeader' }, 
+                { text: 'Haber', rowSpan: 2, style: 'tableHeader' }, 
+                { text: 'Cargo', rowSpan: 2, style: 'tableHeader' }, 
+                { text: 'Abono', rowSpan: 2, style: 'tableHeader' }, 
+                { text: 'Debe', rowSpan: 2, style: 'tableHeader' }, 
+            
+            
+            ],
+            
+        ];
+        const body =[...headers];
+
+        const groupedData = {};
+        this.voucherContableCabecera.forEach((item)=>{
+
+            // body.push([item.]);
+        });
+
+
     }
 }

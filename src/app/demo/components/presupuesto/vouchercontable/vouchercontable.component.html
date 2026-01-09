@@ -53,8 +53,10 @@
                         aria-describedby="username-help"
                         [value]="libro_numero"
                         [disabled]="true"
+                        
                         [style]="{ 'min-width': '100px', height: '2.5rem' }"
                     />
+                    <p-button label="Generar PDF" icon="pi pi-plus"  (onClick) ="generarPDF()"/>
                 </div>
             </div>
         </div>

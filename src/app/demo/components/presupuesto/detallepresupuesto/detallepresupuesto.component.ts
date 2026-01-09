@@ -88,8 +88,7 @@ export class DetallepresupuestoComponent implements OnInit {
         if (navigation?.extras?.state) {
             this.navigationData = navigation.extras.state;
              this.bancoCodMedioPago = this.navigationData.bancoCodMedioPago;
-            console.log("valor de variable bancoCodMedioPago");
-            console.log(this.bancoCodMedioPago);
+            
         } else {
             this.router.navigate(['Home/presupuesto']);
         }
@@ -537,10 +536,10 @@ export class DetallepresupuestoComponent implements OnInit {
                 { text: 'Fecha emision', rowSpan: 2, style: 'tableHeader' },
                 { text: 'Fecha vencimiento', rowSpan: 2, style: 'tableHeader' },
                 { text: 'Importe Total S/.', rowSpan: 2, style: 'tableHeader' },
-                { text: 'Importe Total US$', rowSpan: 2, style: 'tableHeader' },
-                { text: '', colSpan: 2, style: 'tableHeader' },
-                '',
-                { text: 'Detraccion', colSpan: 4, style: 'tableHeader' }, // 3 a 4
+                { text: 'Importe Total US$', rowSpan: 2, style: 'tableHeader' }, // 10
+                { text: '', colSpan: 2, style: 'tableHeader' }, // 11  , 12
+                '', // 13
+                { text: 'Detraccion', colSpan: 4, style: 'tableHeader' }, // 3 a 4 = 14,15,16,17
                 '',
                 '',
                 '',
@@ -561,11 +560,11 @@ export class DetallepresupuestoComponent implements OnInit {
                 '',
                 '',
                 '',
-                '',
-                { text: 'Monto a Pagar S/.', style: 'tableHeader' },
-                { text: 'Monto a Pagar $', style: 'tableHeader' },
-                { text: 'Tipo', style: 'tableHeader' },
-                { text: 'Tasa', style: 'tableHeader' },
+                '', // 10
+                { text: 'Monto a Pagar S/.', style: 'tableHeader' }, // 11
+                { text: 'Monto a Pagar $', style: 'tableHeader' }, // 12
+                { text: 'Tipo', style: 'tableHeader' }, // 13 
+                { text: 'Tasa', style: 'tableHeader' }, // 14
                 { text: 'Importe Soles', style: 'tableHeader' },
                 { text: 'Importe Dolares', style: 'tableHeader' }, // NUEVA COLUMNA Importe Dolares
                 { text: 'Importe Soles', style: 'tableHeader' },
@@ -951,24 +950,23 @@ export class DetallepresupuestoComponent implements OnInit {
     }
     
     generarArchivoPago(){
-        console.log("evento generarArchivoPago");
-        console.log(this.bancoCodMedioPago);
+        
         if(this.bancoCodMedioPago == '01'){
            //banco BBVA falta definir metodos  y codificacion  para el archivo 
-             
+             this.generaArchivoInterbankCab();
+            this.generaArchivoInterbankDet();
        
-        }else if(this.bancoCodMedioPago == '05'){
+        }else if(this.bancoCodMedioPago == '02'){
             //banco banbif , codigo implementado pero con observaciones del resultado
             this.generaArchivoBIFCab();
             //this.generaArchivoBIFDet();
-        }else if(this.bancoCodMedioPago == '06'){
+        }else if(this.bancoCodMedioPago == '03'){
             //banco BCP  falta implementa codigo en los metodo
             this.generaArchivoBCPCab();
             this.generaArchivoBCPDet();
         }else if(this.bancoCodMedioPago == '04'){
             //banco interbank
-                 this.generaArchivoInterbankCab();
-            this.generaArchivoInterbankDet();
+                 
         }
     }
     generaArchivoBIFCab(){
