@@ -301,7 +301,7 @@ export class VouchercontableComponent implements OnInit {
                 { text: 'Num. Doc.', style: 'tableHeader' },
                 { text: 'Fecha Emisión', style: 'tableHeader' },
                 { text: 'Fecha Vencimiento', style: 'tableHeader' },
-                { text: 'Tipo Cambio', style: 'tableHeader' },
+                { text: 'TC', style: 'tableHeader' },
                 { text: 'Debe', style: 'tableHeader' },
                 { text: 'Haber', style: 'tableHeader' },
                 { text: 'Cargo', style: 'tableHeader' },
@@ -327,7 +327,6 @@ export class VouchercontableComponent implements OnInit {
 
         const body:any[] = [...headers];
 
-        let totalTipoCambio = 0;
         let totalDebe = 0;
         let totalHaber = 0;
         let totalCargo = 0;
@@ -349,8 +348,8 @@ export class VouchercontableComponent implements OnInit {
                 item.ctaCteDesc ?? '',
                 item.tipDocDes ?? '',
                 item.numDoc ?? '',
-                item.fechaDoc ?? '',
-                item.fechaVencimiento ?? '',
+                {text:item.fechaDoc ?? '', alignment:'center'},
+                {text:item.fechaVencimiento ?? '', alignment:'center'},
                 formatCell(item.tipoCambio),
                 formatCell(item.importeDebe),
                 formatCell(item.importeHaber),
@@ -358,7 +357,6 @@ export class VouchercontableComponent implements OnInit {
                 formatCell(item.importeHaberEquivalencia),
             ]);
 
-            totalTipoCambio += convertirNumero(item.tipoCambio);
             totalDebe += convertirNumero(item.importeDebe);
             totalHaber += convertirNumero(item.importeHaber);
             totalCargo += convertirNumero(item.importeDebeEquivalencia)
@@ -366,20 +364,19 @@ export class VouchercontableComponent implements OnInit {
         });
 
         body.push([
-                { text: 'Sumas', style: 'total', colSpan: 9, alignment: 'right' },
-                '','','','','','','','',
+                { text: 'Total:', style: 'total', colSpan: 10, alignment: 'right' },
+                '','','','','','','','','',
 
-                { text: formatNumber(totalTipoCambio), style: 'total', alignment: 'center' },
-                { text: formatNumber(totalDebe), style: 'total', alignment: 'center' },
-                { text: formatNumber(totalHaber), style: 'total', alignment: 'center' },
-                { text: formatNumber(totalCargo), style: 'total', alignment: 'center' },
-                { text: formatNumber(totalAbono), style: 'total', alignment: 'center' },
+                { text: formatNumber(totalDebe), style: 'total', alignment: 'right' },
+                { text: formatNumber(totalHaber), style: 'total', alignment: 'right' },
+                { text: formatNumber(totalCargo), style: 'total', alignment: 'right' },
+                { text: formatNumber(totalAbono), style: 'total', alignment: 'right' },
             ]);
         
         // Estructura y estilos del pdf
         const docDefinition = {
             pageOrientation:'landscape',
-            pageMargins:[15, 15, 15, 15],
+            pageMargins:[10, 10, 10, 10],
             content:[
 
                 //titulo
@@ -389,14 +386,15 @@ export class VouchercontableComponent implements OnInit {
                       columns: [
                         {
                             width: 'auto',
-                            align: 'left',
                             text: [
                                 { text: 'Libro de NroVoucher:  ', style: 'label' },
                                 { text: this.libro, style: 'value' },
+                                { text: '     ', style: 'value' },
+                                { text: this.libro_numero, style: 'value' },
+                                
                             ],
-                            margin: [0, 0, 0, 0],
+                             align: 'left',
                         },
-                       
                     ],
                     margin: [0, 0, 0, 6],
 
@@ -407,7 +405,7 @@ export class VouchercontableComponent implements OnInit {
                     table:{
                         headerRows:1,
                         widths:[
-                            25,35,95,45,95,45,55,60,35,40,40,40,40,40
+                            20,35,90,40,70,40,45,55,55,23,58,58,58,58
                         ],
                         body:body,
                         alignment: 'center',
@@ -417,7 +415,6 @@ export class VouchercontableComponent implements OnInit {
                         hLineWidth: function (i, node) {
                             return i === 0 ||
                                 i === 1 ||
-                                i === 2 ||
                                 i === node.table.body.length
                                 ? 1
                                 : 0.3;
@@ -428,7 +425,6 @@ export class VouchercontableComponent implements OnInit {
                         hLineColor: function (i, node) {
                             return i === 0 ||
                                 i === 1 ||
-                                i === 2 ||
                                 i === node.table.body.length
                                 ? 'black'
                                 : '#aaa';
@@ -444,6 +440,7 @@ export class VouchercontableComponent implements OnInit {
                         },
                     },
                 },
+                
             ],
 
             styles: {
