@@ -58,6 +58,7 @@ verConfirmarPago: boolean = false;
 listaDocumentoPendiente : DetraccionIndividualDocPen[] = [];
 listaDocendientedtra: DocPendienteDetra[] =[];
 seleccionDetraIndividual:DetraccionIndividualDocPen = null;
+selectedOption: proveedores_lista[] = []; // row selection multiple
 filtroFRM: FormGroup;
 constructor(private detraccionService: DetraccionService, 
   private config:ConfigService, 

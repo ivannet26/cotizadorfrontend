@@ -24,6 +24,8 @@
             [rowsPerPageOptions]="[5, 10, 20]"
             editMode="row"
             [tableStyle]="{ 'width': '100%', 'border': '0px solid black' }"
+            selectionMode="multiple" 
+            [(selection)]="selectedOption"
         >
             <ng-template pTemplate="header">
                 <tr >
@@ -42,7 +44,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-editing="editing">
-                <tr [pEditableRow]="rowData" >
+                <tr [pEditableRow]="rowData">
                     <td *ngIf="ocultarColumna" style="width: 120px;">{{ rowData.idEmpresa }}</td>
                     <td *ngIf="ocultarColumna" style="width: 120px;">{{ rowData.idBanco }}</td>
                     <td *ngIf="ocultarColumna" style="width: 120px;">{{ rowData.id }}</td>

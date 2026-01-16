@@ -81,6 +81,8 @@
             scrollHeight="500px"
             [loading]="load"
             [globalFilterFields]="['cuenta', 'CtaCbleDesc', 'NumDoc']"
+            selectionMode="multiple" 
+            [(selection)]="selectedOption"
             
         >
             <ng-template pTemplate="header">

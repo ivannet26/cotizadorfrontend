@@ -57,8 +57,9 @@
 
     <div class="card p-2">
         <p-table [value]="DetallePago" sortField="ban02Ruc" sortMode="single" rowGroupMode="subheader" 
-            groupRowsBy="ban02Ruc" [scrollable]="true" scrollHeight="500px" [loading]="load"
-            [globalFilterFields]="['ban02Ruc','razonsocial','ban02NroDoc']"
+            groupRowsBy="ban02Ruc" [scrollable]="true" scrollHeight="500px" [loading]="load" 
+            [globalFilterFields]="['ban02Ruc','razonsocial','ban02NroDoc']" selectionMode="multiple" 
+            [(selection)]="selectedOption"
                  >
             <ng-template pTemplate="header">
                 <tr >
@@ -170,7 +171,7 @@
             </ng-template>
 
             <ng-template pTemplate="body" let-detalle>
-                <tr>
+                <tr >
                     <td style="text-align: left;">{{ detalle.item }}</td>
                     <td style="text-align: left;">{{ detalle.ban02Ruc }}</td>
                     <td style="text-align: left;">{{ detalle.razonsocial }}</td>

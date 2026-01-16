@@ -61,6 +61,7 @@ export class ConsultadocpendienteCtaxcobrarComponent implements OnInit {
   textoBuscar: string = '';
   consultaDocPagoList: TraeDocPendienteCtaxCobra[] = [];
   load: boolean = false;
+  selectedOption: TraeDocPendienteCtaxCobra[] = []; // row selection multiple
 
   constructor(
     private presupuestoService: PresupuestoService,

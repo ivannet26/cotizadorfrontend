@@ -1,0 +1,76 @@
+:host ::ng-deep .fieldset-no-legend .p-fieldset-legend {
+  display: none !important;
+}
+
+:host ::ng-deep .fieldset-no-legend .p-fieldset-content {
+  width: 100% !important;
+  padding-top: 1rem !important; 
+}
+
+.produccion-titulo {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.produccion-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+}
+
+.checkbox {
+  margin-bottom: 20px; 
+}
+
+.costo-produccion {
+  display: grid;
+  grid-template-columns: 140px 180px;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.costo-label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .costo-input.p-inputtext {
+  width: 180px;
+}
+
+:host ::ng-deep .gastos-panel.p-panel {
+  border-width: 2px !important;
+  border-style: solid;
+}
+
+
+:host ::ng-deep .gastos-panel .p-panel-header {
+  display: none !important;
+}
+
+:host ::ng-deep .gastos-panel .p-panel-content {
+  padding: 1rem !important; 
+}
+
+.gastos-panel-t {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.gastos-panel-b {
+  height: 8rem; 
+  background: white; 
+}
+
+
+@media (max-width: 640px) {
+  .costo-produccion {
+    grid-template-columns: 1fr;
+  }
+
+  :host ::ng-deep .costo-input.p-inputtext {
+    width: 100%;
+  }
+}

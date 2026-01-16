@@ -33,7 +33,7 @@
         [loading]="loading"  [globalFilterFields]="['pagoNumero']" 
         [rows]="rowsPerPage" [paginator]="true" 
         [tableStyle]="{ width: '100%', border: '0px solid black' }"
-        [(contextMenuSelection)]="selectedOption" 
+        [(contextMenuSelection)]="selectedOption" selectionMode="multiple" [(selection)]="selectedOption"
         [contextMenu]="cm" styleClass="tbl p-datatable-sm">
             <ng-template pTemplate="header">
                 <tr>
@@ -68,7 +68,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-presupuesto>
-                <tr  [pContextMenuRow]="presupuesto">
+                <tr >
                     <td style="text-align: left; white-space: nowrap;">{{ presupuesto.pagoNumero }}</td>
                     <td style="text-align: left; white-space: nowrap;">
                         <ng-container *ngIf="!editingPresupuesto[presupuesto.pagoNumero]">

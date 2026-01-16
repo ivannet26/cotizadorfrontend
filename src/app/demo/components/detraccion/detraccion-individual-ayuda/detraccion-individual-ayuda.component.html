@@ -64,7 +64,8 @@ header="Confirmar pago individual"
  <p-table [value]="listaDocendientedtra" [scrollable]="true" scrollHeight="400px"
             [scrollDirection]="'both'" [loading]="loading"
             showGridlines [(selection)]="selectedItems"
-            dataKey="clave">
+            dataKey="clave" selectionMode="multiple" 
+            [(selection)]="selectedOption">
             <ng-template pTemplate="header">
                 <tr>
 
@@ -86,7 +87,7 @@ header="Confirmar pago individual"
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-ayudapago>
-                <tr>
+                <tr >
                     <td style="text-align: left;">{{ayudapago.ruc}}</td>
                     <td style="text-align: left;">{{ayudapago.razonsocial}}</td>
                     <td style="text-align: left;">{{ayudapago.nombretipodoc}}</td>

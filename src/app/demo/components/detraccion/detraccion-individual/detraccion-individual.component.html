@@ -54,7 +54,8 @@ header="Confirmar pago individual"
         responsiveLayout="scrol"
         styleClass="{ width: '100%', border: '0px solid black' }"
         [loading]="loading"
-        
+        selectionMode="multiple" 
+        [(selection)]="selectedOption"
         styleClass="tbl p-datatable-sm"
     >
        <ng-template pTemplate="header">

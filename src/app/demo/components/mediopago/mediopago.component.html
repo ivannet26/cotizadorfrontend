@@ -24,7 +24,8 @@
         <!-- Tabla Principal -->
         <p-table [value]="mediopagoList" dataKey="ban01IdTipoPago"  editMode="row" [paginator]="true"
             [rows]="rowsPerPage" responsiveLayout="scroll" styleClass="p-datatable-sm"
-            style="table-layout: fixed; width: 100%;" [scrollable]="true" scrollHeight="400px" [(contextMenuSelection)]="selectedOption" 
+            style="table-layout: fixed; width: 100%;" [scrollable]="true" scrollHeight="400px" 
+            selectionMode="multiple" [(selection)]="selectedOption" [(contextMenuSelection)]="selectedOption" 
                  [contextMenu]="cm" styleClass="tbl p-datatable-sm">
             <!-- Cabecera de Tabla -->
             <ng-template pTemplate="header">
@@ -47,7 +48,7 @@
 
             <!-- Cuerpo de Tabla -->
             <ng-template pTemplate="body" let-mediopago let-ri="rowIndex" let-editing="editing">
-                <tr [pEditableRow]="mediopago"  [pContextMenuRow]="mediopago">
+                <tr [pEditableRow]="mediopago" >
                     <!-- Código -->
                     <td style="text-align: left;">
                         <p-cellEditor>

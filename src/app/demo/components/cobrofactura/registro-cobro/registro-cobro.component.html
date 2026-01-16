@@ -23,7 +23,8 @@
         [loading]="loading" [globalFilterFields]="['ban03numero', 'clienteNombre', 'clienteCodigo']" 
         [rows]="rowsPerPage" [paginator]="true" 
         [tableStyle]="{ width: '100%', border: '0px solid black' }"
-        styleClass="tbl p-datatable-sm"
+        styleClass="tbl p-datatable-sm" selectionMode="multiple" 
+        [(selection)]="selectedOption"
         >
             <ng-template pTemplate="header">
                 <tr>

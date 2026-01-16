@@ -28,6 +28,7 @@ import { RetencionDetallePresupuestoComponent } from './demo/components/retencio
 import { RegistroCobroComponent } from './demo/components/cobrofactura/registro-cobro/registro-cobro.component';
 import { RegistroCobroDetalleComponent } from './demo/components/cobrofactura/registro-cobro-detalle/registro-cobro-detalle.component';
 import { AgregaFacturaxcobrarComponent } from './demo/components/cobrofactura/agrega-facturaxcobrar/agrega-facturaxcobrar.component';
+import { FormularioComponent } from './demo/components/cotizador/formulario.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -65,7 +66,8 @@ import { AgregaFacturaxcobrarComponent } from './demo/components/cobrofactura/ag
                     ,{path:'retencion-presupuesto-detalle', component:RetencionDetallePresupuestoComponent}
                     ,{path:'registro_cobro', component:RegistroCobroComponent}
                     ,{path:'registro_cobro_detalle', component:RegistroCobroDetalleComponent}
-                    ,{path:'agrega_facturaxcobrar', component:AgregaFacturaxcobrarComponent}
+                    ,{path:'agrega_facturaxcobrar', component:AgregaFacturaxcobrarComponent},
+                    {path: 'cotizador', component:FormularioComponent}
                 ]
             },
             { path: 'notfound', component: NotfoundComponent },

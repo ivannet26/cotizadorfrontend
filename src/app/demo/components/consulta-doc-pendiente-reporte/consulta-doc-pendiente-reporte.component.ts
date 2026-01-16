@@ -55,6 +55,7 @@ items: any[] = [];
 textoBuscar: string='';
 consultaDocPorPagoList: ConsultaDocPorPago[] = [];
 ayudapago: agregar_Pago[] = [];
+selectedOption: ConsultaDocPorPago[] = []; // row selection multiple
 load: boolean = false;
   constructor(private presupuestoService:PresupuestoService, 
     private breadcrumbService:BreadcrumbService,

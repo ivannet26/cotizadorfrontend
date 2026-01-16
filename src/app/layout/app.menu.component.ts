@@ -112,6 +112,17 @@ export class AppMenuComponent implements OnInit {
             };
         });
 
+        this.model.push({
+            label:'Cotizador',
+            icon: 'pi pi-fw pi-file',
+            items:[
+                {
+                    label:'Formulario',
+                    icon:'pi pi-fw pi-list',
+                    routerLink:['/Home/cotizador']
+                }
+            ]
+        });
         
     }
 }

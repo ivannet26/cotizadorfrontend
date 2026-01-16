@@ -70,6 +70,8 @@ export class ConsultahistoricaCtaxcobrarComponent implements OnInit {
 
   searchPerformed: boolean = false;
 
+  selectedOption: ConsultaDocPorPago[] = []; // row selection multiple
+
   // Variables para el modal de sustentos
   displayModalSustentos: boolean = false;
   listaSustentos: RegistroCobroDocSustento[] = [];

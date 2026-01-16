@@ -11,8 +11,11 @@
             class="p-ml-2" style="height: 35px;" 
             (click)="buscar()"></p-button> -->
 
-            <p-button label="Buscar"  styleClass="p-button-sm mr-2" icon="pi pi-search"
-                (onClick)="buscar()"></p-button>
+            <p-button 
+            label="Buscar" 
+            styleClass="p-button-sm mr-2"
+            icon="pi pi-search"
+            (onClick)="buscar()"></p-button>
             
             <p-button label="Imprimir PDF"  icon="pi pi-file"
              styleClass="p-button-green p-button-success mr-2"
@@ -29,6 +32,8 @@
         groupRowsBy="ruc" rowGroupMode="subheader"
         [loading]="load"
         styleClass="tbl p-datatable-sm"
+        selectionMode="multiple" 
+        [(selection)]="selectedOption"
         >
         <ng-template pTemplate="header">
             <tr>
@@ -91,7 +96,7 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-doc>
-            <tr>
+            <tr  >
             <td style="text-align: left; white-space: nowrap;">{{ doc.ruc }}</td>
             <td style="text-align: left; white-space: nowrap;">{{ doc.razonSocial }}</td>
             <td style="text-align: left; white-space: nowrap;">{{ doc.nombreTipoDOc }}</td>

@@ -39,7 +39,8 @@ header="COnfirmar pago"
             [paginator]="true"
             [rows]="rowsPerPage"
             responsiveLayout="scrol"
-             
+            selectionMode="multiple" 
+            [(selection)]="selectedOption"
             styleClass="p-datatable-sm"
             [loading]="loading"
             styleClass="tbl p-datatable-sm"
@@ -63,7 +64,7 @@ header="COnfirmar pago"
                     </ng-template>
                     <ng-template pTemplate="body" 
                         let-detmasiva>
-                        <tr >
+                        <tr  >
                             <td style="text-align:left; white-space:nowrap;" >
                                 {{detmasiva.loteDetraccionNro}}
                             </td>

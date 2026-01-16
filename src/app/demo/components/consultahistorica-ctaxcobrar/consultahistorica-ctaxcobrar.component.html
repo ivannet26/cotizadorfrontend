@@ -17,7 +17,8 @@
     <div class="card p-2">
         <p-table [value]="traerHistoricoList" [scrollable]="true"
             [tableStyle]="{width: '100%', border: '0px solid black'}" [loading]="load"
-            styleClass="tbl p-datatable-sm">
+            styleClass="tbl p-datatable-sm" selectionMode="multiple" 
+            [(selection)]="selectedOption">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="text-align: center;">RUC</th>
@@ -37,7 +38,7 @@
             </ng-template>
 
             <ng-template pTemplate="body" let-doc>
-                <tr>
+                <tr [pSelectableRow]="doc">
                     <td style="text-align: center; white-space: nowrap;">{{ doc.ruc }}</td>
                     <td style="text-align: left; white-space: nowrap;">{{ doc.razonSocial }}</td>
                     <td style="text-align: center; white-space: nowrap;">{{ doc.tipoDocDesc }}</td>

@@ -30,7 +30,9 @@
                  styleClass="p-datatable-sm"
                  [(contextMenuSelection)]="selectedOption" 
                  [contextMenu]="cm"
-                 styleClass="tbl p-datatable-sm">
+                 styleClass="tbl p-datatable-sm"
+                 selectionMode="multiple" 
+                 [(selection)]="selectedOption">
             <!-- Cabecera de Tabla -->
             <ng-template pTemplate="header">
                 <tr>
@@ -43,7 +45,7 @@
 
             <!-- Cuerpo de Tabla -->
             <ng-template pTemplate="body" let-banco let-ri="rowIndex" let-editing="editing">
-                <tr [pEditableRow]="banco" [pContextMenuRow]="banco">
+                <tr [pEditableRow]="banco" >
                     <!-- Columna ID -->
                     <td style="text-align: left;">
                         <p-cellEditor>
