@@ -7,16 +7,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
+import { Proceso } from '../../model/Proceso';
+import { Produccion } from '../../model/Produccion';
+import { Opcion } from '../../model/Opcion';
+import { TipoEnvio } from '../../model/TipoEnvio';
 
-
-interface Produccion {
-  id: string;
-  descripcion: string;
-}
-interface Opcion {
-  id: string;
-  descripcion: string;
-}
 // llaves para checkbox embalaje
 type EmbalajeKey = 'java' | 'carton' | 'cajaMadera' | 'caballete';
 
@@ -48,6 +43,7 @@ export class FormularioComponent implements OnInit {
   calidades: Opcion[] = [];
   colores:Opcion[]=[];
   embalajes:Opcion[]=[]
+  tiposEnvio: TipoEnvio[] = [];
 
   //Checkbox Tree
   treeNodes:TreeNode[]=[
@@ -92,6 +88,8 @@ export class FormularioComponent implements OnInit {
     embalajeCarton:new FormControl<boolean>(false,{nonNullable:true}),
     embalajeCajaMadera:new FormControl<boolean>(false,{nonNullable:true}),
     embalajeCaballete:new FormControl<boolean>(false,{nonNullable:true}),
+
+    tipoEnvio: new FormControl<TipoEnvio | null>(null),
 
 
     //columna derecha
@@ -139,11 +137,22 @@ export class FormularioComponent implements OnInit {
       { id: '4', descripcion: 'caballete' }
     ];
 
-    // Recalculando el costo al cambiar la opcion en dropdownlist Produccion
-    this.formGroup.controls.produccionElegida.valueChanges.subscribe(()=>{
+    this.tiposEnvio = [
+      { id: '1', descripcion: 'Opción 1' },
+      { id: '2', descripcion: 'Opción 2' }
+    ];
+
+
+    // Recalculando el costo de produccion
+    this.formGroup.controls.produccionElegida.valueChanges.subscribe(() => {
+      this.actualizarProcesosPorProduccion();
+    });
+    
+    this.formGroup.controls.tipoEnvio.valueChanges.subscribe(() => {
       this.recalcularCostoProduccion();
     });
 
+    // Recalculando el costo de materia prima
     this.formGroup.controls.cantera.valueChanges.subscribe(()=>{
       this.recalcularCostoMateriaPrima()
     });
@@ -180,6 +189,40 @@ export class FormularioComponent implements OnInit {
       this.recalcularCostoProduccion();
   }
 
+  procesosBaldosa:Proceso[]=[
+    { id: 'corte', nombre: 'Corte', valor: 10 },
+    { id: 'desdoblado', nombre: 'Desdoblado', valor: 15 },
+    {
+      id: 'linea', nombre: 'Línea', valor: 0,
+      hijos: [
+        { id: 'linea11', nombre: 'Línea11', valor: 30 }
+      ]
+    }
+  ];
+
+  procesosMosaico: Proceso[] = [
+    { id: 'corte', nombre: 'Corte', valor: 10 },
+    { id: 'calibrado', nombre: 'Calibrado', valor: 20 },
+    { id: 'estucado', nombre: 'Estucado', valor: 25 }
+  ];
+
+  procesosOtros: Proceso[] = [
+    { id: 'corte', nombre: 'Corte', valor: 10 },
+    { id: 'desdoblado', nombre: 'Desdoblado', valor: 15 },
+    { id: 'calibrado', nombre: 'Calibrado', valor: 20 },
+    { id: 'estucado', nombre: 'Estucado', valor: 25 },
+    {
+      id: 'linea', nombre: 'Línea', valor: 0,
+      hijos: [
+        { id: 'linea11', nombre: 'Línea11', valor: 30 },
+        { id: 'linea12', nombre: 'Línea12', valor: 35 },
+        { id: 'linea13', nombre: 'Línea13', valor: 40 },
+      ]
+    }
+  ];
+
+
+
   private getValorProduccion(p:Produccion|null):number{
     if(!p) return 0;
 
@@ -195,6 +238,17 @@ export class FormularioComponent implements OnInit {
     }
   }
 
+  private getValorTipoEnvio(t: TipoEnvio|null):number{
+    if(!t) return 0;
+
+    switch(t.id){
+      case '1': return 10;
+      case '2': return 15;
+      default: return 0;
+    }
+  }
+
+  /*
   private readonly valoresTree: Record<string,number>={
     corte:10,
     desdoblado:15,
@@ -204,6 +258,7 @@ export class FormularioComponent implements OnInit {
     linea12:35,
     linea13:40
   };
+  */
 
   // Suma de valores columna izquierda
   private sumarValoresProcesos():number{
@@ -211,8 +266,8 @@ export class FormularioComponent implements OnInit {
 
     for(const n of (this.selectedNodes??[])){
       const key=String(n.key??'');
-      if(this.valoresTree[key]!=null){
-        total+=this.valoresTree[key];
+      if(this.valoresProcesos[key]!=null){
+        total+=this.valoresProcesos[key];
       }
     }
 
@@ -222,9 +277,13 @@ export class FormularioComponent implements OnInit {
   // Calculo total columna izquierda
   private recalcularCostoProduccion():void{
     const produccion=this.formGroup.controls.produccionElegida.value;
+    const tipoEnvio=this.formGroup.controls.tipoEnvio.value;
+
     const valorProduccion=this.getValorProduccion(produccion);
     const valorTree=this.sumarValoresProcesos();
-    const total=valorProduccion+valorTree;
+    const valorEnvio=this.getValorTipoEnvio(tipoEnvio);
+
+    const total=valorProduccion+valorTree+valorEnvio;
 
     this.formGroup.controls.costoProduccion.setValue(total,{emitEvent:false});
   }
@@ -297,5 +356,66 @@ export class FormularioComponent implements OnInit {
     const total=vCantera+vTipo+vColor+vEmbalaje;
 
     this.formGroup.controls.costoMateriaPrima.setValue(total,{ emitEvent: false });
+  }
+
+  private convertirProcesosATreeNodes(procesos:Proceso[]):TreeNode[]{
+    const children:TreeNode[]=[];
+
+    for(const p of procesos){
+      children.push(this.procesoANodo(p));
+    }
+
+    return[{
+      label:'Procesos',
+      key:'procesos',
+      selectable:false,
+      children
+    }];
+  }
+
+  // Muestra los nodos correspondientes a un proceso
+  private procesoANodo(p:Proceso):TreeNode{
+    const nodo:TreeNode={
+      label:p.nombre,
+      key:p.id
+    };
+
+    if(p.hijos?.length){
+      nodo.children=p.hijos.map(h=>this.procesoANodo(h));
+    }
+    return nodo;
+  }
+
+  private valoresProcesos: Record<string, number> = {};
+
+  private cargarValoresProcesos(procesos:Proceso[]):void{
+    this.valoresProcesos={};
+    const recorrer=(arr:Proceso[])=>{
+      for(const p of arr){
+        this.valoresProcesos[p.id]=p.valor;
+        if(p.hijos?.length) recorrer(p.hijos);
+      }
+    };
+    recorrer(procesos);
+  }
+
+  private actualizarProcesosPorProduccion():void{
+    const prod=this.formGroup.controls.produccionElegida.value;
+    const desc=(prod?.descripcion??'').toLocaleLowerCase();
+
+    let procesos:Proceso[];
+
+    if(desc === 'baldosa'){
+      procesos=this.procesosBaldosa;
+    }else if (desc === 'mosaico') {
+      procesos=this.procesosMosaico;
+    } else {
+      procesos = this.procesosOtros;
+    }
+
+     this.treeNodes = this.convertirProcesosATreeNodes(procesos);
+     this.cargarValoresProcesos(procesos);
+      this.selectedNodes = [];
+      this.recalcularCostoProduccion();
   }
 }

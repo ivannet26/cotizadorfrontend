@@ -7,9 +7,20 @@
       <p-fieldset class="w-full block" styleClass="fieldset-no-legend" [legend]="''">
         
         <!--Producción--> 
-        <div class="produccion-titulo">Producción</div> 
+        <div class="produccion-titulo">Tipo envio</div>
         
         <div class="produccion-box"> 
+
+          <p-dropdown
+          [options]="tiposEnvio"
+          formControlName="tipoEnvio"
+          optionLabel="descripcion"
+          placeholder="Seleccione"
+          [showClear]="true">
+          </p-dropdown>
+          
+          
+          <div class="produccion-titulo">Producción</div> 
 
             <!--Dropdown list--> 
           <div class="droplist"> 
