@@ -15,9 +15,9 @@
           <div class="droplist"> 
             <p-dropdown 
               [options]="producciones" 
-              formControlName="selectedCity"
-              optionLabel="name" 
-              placeholder="Seleccione una ciudad" 
+              formControlName="produccionElegida"
+              optionLabel="descripcion" 
+              placeholder="Seleccione" 
               [showClear]="true"> 
             </p-dropdown> 
           </div> 
@@ -27,7 +27,8 @@
             <p-tree 
               [value]="treeNodes" 
               selectionMode="checkbox"
-              [(selection)]="selectedNodes">
+              [(selection)]="selectedNodes"
+              (selectionChange)="onTreeSelectChange($event)">
             </p-tree> 
           </div>
           
@@ -40,13 +41,14 @@
               pInputText
               formControlName="costoProduccion"
               class="costo-input"
+              readonly
             />
           </div>
 
           <!--Panel gastos--> 
-          <p-panel class="gastos-panel" [toggleable]="false">
-            <div class="gastos-panel-t">Gastos administrativos</div>
-            <div class="gastos-panel-b"></div>
+          <p-panel class="panel" [toggleable]="false">
+            <div class="panel-t">Gastos administrativos</div>
+            <div class="panel-b"></div>
           </p-panel>
 
         </div> 
@@ -57,49 +59,121 @@
     <div class="flex flex-col gap-5 min-w-0"> 
       <p-fieldset class="w-full" styleClass="fieldset-no-legend" [legend]="''">
 
-        <!--Produccion--> 
+        <!--Materia prima--> 
         <div class="produccion-titulo">Materia Prima</div>
         <div class="materia-caja">
 
             <!--Cantera--> 
-            <div class="materia-colum">
+            <div class="materia-fil">
                 <label class="materia-label">Cantera</label>
                  <p-dropdown
-                 class="w-full"
+                 class="mm"
                  [options]="canteras"
-                 formControlName="mp1"
-                 optionLabel="name"
+                 formControlName="cantera"
+                 optionLabel="descripcion"
                  placeholder="Seleccione"
                  [showClear]="true">
                 </p-dropdown>
             </div>
 
             <!--Tipo--> 
-            <div class="materia-colum">
+            <div class="materia-fil">
                 <label class="materia-label">Tipo Bloque</label>
                 <p-dropdown
-                class="w-full"
+                class="mm"
                 [options]="tipos"
-                formControlName="mp2"
-                optionLabel="name"
+                formControlName="tipo"
+                optionLabel="descripcion"
                 placeholder="Seleccione"
                 [showClear]="true">
                </p-dropdown>
             </div>
             
-            <!--Calidad--> 
-            <div class="materia-column">
+            <!--Color--> 
+            <div class="materia-fil">
                 <label class="materia-label">Color</label>
                 <p-dropdown
-                class="w-full"
-                [options]="calidades"
-                formControlName="mp3"
-                optionLabel="name"
+                class="mm"
+                [options]="colores"
+                formControlName="color"
+                optionLabel="descripcion"
                 placeholder="Seleccione"
                 [showClear]="true">
                </p-dropdown>
             </div>
-        </div>
+
+             <!--Costo materia prima--> 
+             <div class="costo-ma">
+              <label for="costoMateria" class="costo-label">Costo Materia Prima</label>
+              <input
+              id="costoMateria"
+              type="text"
+              pInputText
+              formControlName="costoMateriaPrima"
+              class="costo-input"
+              readonly
+              />
+             </div>
+
+              <!--Checkbox--> 
+              <div class="checkbox-em">
+                <div class="embalaje-titulo">Embalaje</div>
+                  <div class="embalaje-list">
+
+                    <!--Item 1--> 
+                    <div class="embalaje-item">
+                      <p-checkbox 
+                      formControlName="embalajeJava" 
+                      inputId="embalajeJava"
+                      binary="true">
+                      </p-checkbox>
+                     <label for="embalajeJava">{{ embalajes[0]?.descripcion }}</label>
+                    </div>
+                    
+                    <!--Item 2--> 
+                    <div class="embalaje-item">
+                      <p-checkbox 
+                      formControlName="embalajeCarton" 
+                      inputId="embalajeCarton"
+                      binary="true">
+                      </p-checkbox>
+                      <label for="embalajeCarton">{{ embalajes[1]?.descripcion }}</label>
+                    </div>
+                    
+                    <!--Item 3--> 
+                    <div class="embalaje-item">
+                      <p-checkbox 
+                      formControlName="embalajeCajaMadera" 
+                      inputId="embalajeCajaMadera"
+                      binary="true">
+                      </p-checkbox>
+                      <label for="embalajeCajaMadera">{{ embalajes[2]?.descripcion }}</label>
+                    </div>
+                    
+                    <!--Item 4--> 
+                    <div class="embalaje-item">
+                      <p-checkbox 
+                      formControlName="embalajeCaballete" 
+                      inputId="embalajeCaballete"
+                      binary="true">
+                      </p-checkbox>
+                      <label for="embalajeCaballete">{{ embalajes[3]?.descripcion }}</label>
+                    </div>
+                  </div>
+                </div>
+              
+              <!--Panel exn-fab--> 
+              <p-panel class="panel" [toggleable]="false">
+                <div class="panel-t">exn-fab</div>
+                <div class="panel-b"></div>
+              </p-panel>
+              
+              <!--Panel flete--> 
+              <p-panel class="panel" [toggleable]="false">
+                <div class="panel-t">Flete</div>
+                <div class="panel-b"></div>
+              </p-panel>
+            </div>
 
       </p-fieldset>
     </div> 

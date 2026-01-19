@@ -31,6 +31,15 @@
   margin-bottom: 12px;
 }
 
+.costo-ma {
+  display: grid;
+  grid-template-columns: 140px 180px;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px;
+  margin-bottom: 12px;
+}
+
 .costo-label {
   font-weight: 600;
   white-space: nowrap;
@@ -40,31 +49,78 @@
   width: 180px;
 }
 
-:host ::ng-deep .gastos-panel.p-panel {
+:host ::ng-deep .panel.p-panel {
   border-width: 2px !important;
   border-style: solid;
 }
 
 
-:host ::ng-deep .gastos-panel .p-panel-header {
+:host ::ng-deep .panel .p-panel-header {
   display: none !important;
 }
 
-:host ::ng-deep .gastos-panel .p-panel-content {
+:host ::ng-deep .panel .p-panel-content {
   padding: 1rem !important; 
 }
 
-.gastos-panel-t {
+.panel-t {
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
-.gastos-panel-b {
+.panel-b {
   height: 8rem; 
   background: white; 
 }
 
+.materia-caja {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; 
+}
 
+.materia-fil{
+  display: grid;
+  grid-template-columns: 110px 1fr; /* ancho label */
+  align-items: center;
+  gap: 12px; /* espacio entre label y dropdown */
+}
+
+.materia-label {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .mm .p-dropdown {
+  width: 100% !important;
+}
+
+.checkbox-em{
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 16px; 
+  background: #fff;
+}
+
+.embalaje-titulo{
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.embalaje-list{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.embalaje-item{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* organizacion en formato celular */
 @media (max-width: 640px) {
   .costo-produccion {
     grid-template-columns: 1fr;
