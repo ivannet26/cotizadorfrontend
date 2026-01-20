@@ -129,4 +129,27 @@
   :host ::ng-deep .costo-input.p-inputtext {
     width: 100%;
   }
+
+  /*Cantera, Tipo Bloqe, Color*/
+  .materia-fil{
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 6px;
+  }
+
+  .materia-label{
+    white-space: normal;
+  }
+
+  /* label Costo Produccion */
+  .costo-ma{
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 6px;
+  }
+
+  :host ::ng-deep .costo-ma .costo-input.p-inputtext{
+    width: 100%;
+  }
+  
 }
