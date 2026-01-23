@@ -1,0 +1,280 @@
+<p-confirmDialog></p-confirmDialog>
+<p-toast position="top-right"></p-toast>
+
+<div class="container">
+  <!-- Panel -->
+   <div class="grid">
+    <div class="col-12">
+      
+      <p-card header="Resumen de la estimación">
+        <div class="grid">
+          
+          <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-1">
+              <small class="text-700">Costo inicial</small>
+            </div>
+          </div>
+          
+          <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-1">
+              <small class="text-700">Costo mensual</small>
+            </div>
+          </div>
+          
+          <div class="col-12 md:col-4">
+            <div class="flex flex-column gap-1">
+              <small class="text-700">Costo total</small>
+            </div>
+          </div>
+        
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+   <div class="grid mt-3">
+    <div class="col-12">
+
+      <p-card>
+        <div class="top-row mb-3">
+          <!--<div class="text-xl font-semibold">Titulo</div>-->
+
+          <!-- Boton Nueva cotización -->
+          <div class="flex align-items-center botones-top">
+            <button
+            type="button"
+            pButton
+            icon="pi pi-plus"
+            label="Nueva cotización"
+            class="p-button-sm"
+            (click)="goToFormCotizador()"
+            ></button>
+
+            <!-- Boton Exportar excel -->
+            <p-button
+            label="Exportar Excel"
+            icon="pi pi-file-excel"
+            styleClass="p-button-green p-button-success mr-2">
+            </p-button>
+          </div>
+
+          <div class="flex align-items-center gap-2 rows-right">
+            <label for="rowsPerPage">Filas por página:</label>
+            <p-dropdown
+            id="rowsPerPage"
+            [options]="rowsPerPageOptions"
+            [(ngModel)]="rowsPerPage"
+            [style]="{ width: '90px' }"
+            ></p-dropdown>
+
+            
+          </div>
+
+          <!-- Barra de busqueda -->
+          <span class="p-input-icon-left w-full md:w-25rem">
+            <i class="pi pi-search"></i>
+            <input
+            pInputText
+            type="text"
+            placeholder="Buscar cotizaciones"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+            class="w-full"
+            />
+          </span>
+        </div>
+        
+        <p-table
+        #dt
+        [value]="items"
+        [paginator]="true"
+        [rows]="10"
+        [rowHover]="true"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm"
+        [globalFilterFields]="[
+        'cantidad','ancho','largo','espesor',
+        'tipoEnvio','produccion',
+        'costoInicial','cantera','tipoBloque',
+        'costoMateriaPrima','embalaje']"
+        >
+
+        <!-- Header tabla -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="min-width: 14rem;">Cantidad</th>
+            <th style="min-width: 14rem;">Ancho</th>
+            <th style="min-width: 14rem;">Largo</th>
+            <th style="min-width: 14rem;">Espesor</th>
+            <th style="min-width: 14rem;">Tipo de Envio</th>
+            <th style="min-width: 8rem;">Produccion</th>
+            <th style="min-width: 9rem;">Costo inicial</th>
+            <th style="min-width: 10rem;">Cantera</th>
+            <th style="min-width: 12rem;">Tipo Bloque</th>
+            <!--<th style="min-width: 10rem;">Color</th>-->
+            <th style="min-width: 18rem;">Costo Materia Prima</th>
+            <th style="min-width: 18rem;">Embalaje</th>
+            <th style="min-width: 8rem; text-align:center;">Acciones</th>
+          </tr>
+        </ng-template>
+
+        <!-- Body tabla -->
+        <ng-template pTemplate="body" let-row let-ri="rowIndex">
+          <tr>
+            <td>{{ row.cantidad }}</td>
+            <td>{{ row.ancho }}</td>
+            <td>{{ row.largo }}</td>
+            <td>{{ row.espesor }}</td>
+            <td>{{ row.tipoEnvio }}</td>
+            <td>{{ row.produccion }}</td>
+            <td>{{ row.costoInicial }}</td>
+            <td>{{ row.cantera }}</td>
+            <td>{{ row.tipoBloque }}</td>
+           <!-- <td>{{ row.color }}</td>-->
+            <td>{{ row.costoMateriaPrima }}</td>
+            <td>{{ row.embalaje }}</td>
+            <td class="text-center">
+      <div class="flex justify-content-center gap-2">
+        <button
+          type="button"
+          pButton
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-text p-button-smm"
+          pTooltip="Editar"
+          (click)="editarCotizacion(row)"
+          [disabled]="isEditing"
+        ></button>
+
+        <button
+          type="button"
+          pButton
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-text p-button-danger p-button-smm"
+          pTooltip="Eliminar"
+          (click)="onDeleteRow(row, ri)"
+          [disabled]="isEditing"
+        ></button>
+      </div>
+    </td>
+          </tr>
+        </ng-template>
+
+        <!-- Footer tabla -->
+        <ng-template pTemplate="footer">
+          <tr *ngIf="isEditing" [formGroup]="cotizacionForm">
+            <td>
+              <input 
+              pInputText 
+              placeholder="Cantidad"
+              class="p-inputtext-sm w-full" 
+              formControlName="cantidad" >
+            </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Ancho"
+              class="p-inputtext-sm w-full" 
+              formControlName="ancho" >
+            </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Largo"
+              class="p-inputtext-sm w-full" 
+              formControlName="largo" >
+            
+            </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Espesor"
+              class="p-inputtext-sm w-full" 
+              formControlName="espesor" >
+            </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Tipo envio"
+              class="p-inputtext-sm w-full"
+               formControlName="tipoEnvio" >
+              </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Producción"
+              class="p-inputtext-sm w-full" 
+              formControlName="produccion" >
+            </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Costo inicial"
+              class="p-inputtext-sm w-full" 
+              formControlName="costoInicial" >
+            </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Cantera"
+              class="p-inputtext-sm w-full"
+               formControlName="cantera" >
+              </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Tipo bloque"
+              class="p-inputtext-sm w-full" 
+              formControlName="tipoBloque" >
+            </td>
+            <td>
+              <input 
+              pInputText 
+              placeholder="Color"
+              class="p-inputtext-sm w-full" 
+              formControlName="color" >
+            </td>
+            <td>
+              <input 
+              pInputText
+              placeholder="Costo materia prima"
+             class="p-inputtext-sm w-full" 
+             formControlName="costoMateriaPrima">
+          </td>
+          <td>
+            <input pInputText class="p-inputtext-sm w-full"
+            placeholder="Embalaje"
+            formControlName="embalaje">
+          </td>
+          <td>
+            <div class="flex gap-2 justify-content-center">
+              <p-button 
+              icon="pi pi-check" 
+              styleClass="p-button-success p-button-smm" 
+              [text]="true"
+              (onClick)="onSave()" 
+              pTooltip="Guardar">
+             </p-button>
+             
+             <p-button 
+             icon="pi pi-times" 
+             styleClass="p-button-danger p-button-smm" 
+             [text]="true"
+            (onClick)="onCancel()" 
+            pTooltip="Cancelar">
+           </p-button>
+      </div>
+    </td>
+        </tr>
+      </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="13">No hay cotizaciones para mostrar</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>
+
+</div>

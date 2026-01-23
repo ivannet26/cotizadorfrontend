@@ -7,19 +7,32 @@
   padding-top: 1rem !important; 
 }
 
-.produccion-titulo {
-  font-weight: 600;
-  margin-bottom: 10px;
+.form-wrapper{
+  max-width: 825px;
+  margin: 0 auto;
+}
+
+.produccion-fil{
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.produccion-label{
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .produccion-box {
   display: flex;
   flex-direction: column;
-  gap: 16px; 
+  gap: 25px; 
 }
 
 .checkbox {
   margin-bottom: 20px; 
+  margin-top: 16px;
 }
 
 .costo-produccion {
@@ -29,6 +42,11 @@
   gap: 16px;
   margin-top: 4px;
   margin-bottom: 12px;
+}
+
+.section-title{
+  font-weight: 600;
+  margin-bottom: 16px;
 }
 
 .costo-ma {
@@ -69,21 +87,35 @@
 }
 
 .panel-b {
-  height: 8rem; 
+  height: auto; 
   background: white; 
 }
 
+.panel-textarea {
+  width: 100%;
+  min-height: 115px;
+  resize: none;
+}
 .materia-caja {
   display: flex;
   flex-direction: column;
   gap: 12px; 
 }
 
+/*
 .materia-fil{
   display: grid;
-  grid-template-columns: 110px 1fr; /* ancho label */
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 6px;
+}
+  */
+
+.materia-fil{
+  display: grid;
+  grid-template-columns: 110px 1fr;
   align-items: center;
-  gap: 12px; /* espacio entre label y dropdown */
+  gap: 12px;
 }
 
 .materia-label {
@@ -120,8 +152,150 @@
   gap: 10px;
 }
 
+/* primer bloque */
+.medidas-card{
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+}
+
+.medidas-grid{
+  display: grid;
+  grid-template-columns: repeat(8, max-content); 
+  gap: 40px;
+  align-items: end;
+  justify-content: center;
+}
+
+
+.medidas-m3{
+  min-width: 6.5ch;
+  max-width: 6.5ch;
+}
+
+
+
+:host ::ng-deep .medidas-card .p-inputtext {
+  font-size: 1rem;
+}
+
+
+:host ::ng-deep .medidas .p-dropdown-item {
+  font-size: 1rem !important;
+}
+
+:host ::ng-deep .medidas .p-dropdown-label.p-inputtext {
+  font-size: 1rem !important;
+}
+
+.medidas-item{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.medidas-label{
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.medidas-input{
+  width: 100%;
+}
+
+:host ::ng-deep .medidas-card .p-inputtext{
+  color: #000;
+  opacity: 1;
+  
+}
+
+
+:host ::ng-deep .medidas .p-dropdown{
+  width: 100% !important;
+}
+
+.medidas{
+  min-width: 11ch;
+  max-width: 11ch;
+}
+
+
+.medidas-wrap{
+  max-width: 800px;  
+  margin: 0 auto;   
+}
+
+.medidas-card{
+  width: 100%;
+}
+
+.medidas-m6{
+  width: 8ch;
+  min-width: 9ch;
+  max-width: 9ch;
+}
+
+
+.droplist {
+  margin-top: -15px;
+  margin-bottom: 16px;
+}
+
+
+.form-actions{
+  margin-top: 24px;
+  width: 100%;
+  justify-self: stretch;
+}
+
+
+:host ::ng-deep .form-actions p-button{
+  display: block;
+  width: 100%;
+}
+
+
+:host ::ng-deep .form-actions .p-button{
+  width: 100%;
+  display: flex; 
+  justify-content: center;
+}
+
+.panel-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+
+
+
 /* organizacion en formato celular */
 @media (max-width: 640px) {
+
+  /* Primer bloque */
+  .medidas-grid{
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 12px;
+  }
+
+  .medidas-item{
+    max-width: 200px;
+  }
+
+  .medidas-card{
+    width: fit-content;     
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  :host ::ng-deep .medidas .p-dropdown{
+    width: 100% !important;
+  }
+
   .costo-produccion {
     grid-template-columns: 1fr;
   }
@@ -132,7 +306,7 @@
 
   /*Cantera, Tipo Bloqe, Color*/
   .materia-fil{
-    grid-template-columns: 1fr;
+    grid-template-columns: 110px 1fr;
     align-items: start;
     gap: 6px;
   }
@@ -146,6 +320,7 @@
     grid-template-columns: 1fr;
     align-items: start;
     gap: 6px;
+    
   }
 
   :host ::ng-deep .costo-ma .costo-input.p-inputtext{

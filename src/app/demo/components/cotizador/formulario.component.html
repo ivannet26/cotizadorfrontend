@@ -1,16 +1,111 @@
-<form [formGroup]="formGroup">
-  <div class="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-6 items-start"> 
-    
+<p-toast position="top-right"></p-toast><p-toast position="top-right"></p-toast>
+
+<form [formGroup]="formGroup" class="p-3">
+
+  <div class="form-wrapper grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-6 items-stretch">
+
+    <!--Primer Bloque-->
+    <div class="medidas-card">
+      <div class="medidas-grid">
+
+        <!-- Cantidad -->
+         <div class="medidas-item">
+          <label class="medidas-label">Cantidad</label>
+          <input 
+          pInputText 
+          type="text" 
+          formControlName="cantidad" 
+          class="medidas-input medidas-m6" />
+        </div>
+
+        <!-- Unidad de medida 1-->
+         <div class="medidas-item">
+          <label class="medidas-label">Uni med</label>
+          <p-dropdown
+          formControlName="unidadCantidad"
+          [options]="unidadesCantidad"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccione"
+          [editable]="true"
+          class="medidas">
+         </p-dropdown>
+        </div>
+
+        <!-- Ancho -->
+         <div class="medidas-item">
+          <label class="medidas-label">Ancho</label>
+          <input 
+          pInputText type="text" 
+          formControlName="ancho" 
+          class="medidas-input medidas-m6" />
+        </div>
+
+        <!-- Unidad de medida 2 -->
+         <div class="medidas-item">
+          <label class="medidas-label">Uni med</label>
+          <input 
+          pInputText 
+          type="text" 
+          formControlName="unidadAncho" 
+          class="medidas-input medidas-m3" 
+          readonly />
+        </div>
+
+        <!-- Largo -->
+         <div class="medidas-item">
+          <label class="medidas-label">Largo</label>
+          <input 
+          pInputText 
+          type="text" 
+          formControlName="largo" 
+          class="medidas-input medidas-m6" />
+        </div>
+
+        <!-- Unidad de medida 3 -->
+         <div class="medidas-item">
+          <label class="medidas-label">Uni med</label>
+          <input 
+          pInputText 
+          type="text" 
+          formControlName="unidadLargo" 
+          class="medidas-input medidas-m3" 
+          readonly />
+        </div>
+
+        <!-- Espesor -->
+         <div class="medidas-item">
+          <label class="medidas-label">Espesor</label>
+          <input 
+          pInputText 
+          type="text" 
+          formControlName="espesor" 
+          class="medidas-input medidas-m6" />
+        </div>
+
+        <!-- Unidad de medida 4 -->
+         <div class="medidas-item">
+          <label class="medidas-label">Uni med</label>
+          <input 
+          pInputText 
+          type="text" 
+          formControlName="unidadEspesor" 
+          class="medidas-input medidas-m3" 
+          readonly />
+        </div>
+      </div>
+     </div>
+
     <!--Lado Izquierdo--> 
-    <div class="flex flex-col gap-5 min-w-0"> 
+    <div class="flex flex-col gap-5 min-w-0 h-full">
 
       <p-fieldset class="w-full block" styleClass="fieldset-no-legend" [legend]="''">
         
-        <!--Producción--> 
-        <div class="produccion-titulo">Tipo envio</div>
+        <!--Producción>--> 
         
-        <div class="produccion-box"> 
-
+        <div class="produccion-box">
+          <div class="produccion-fil">
+             <label class="produccion-label">Tipo envío</label>
           <p-dropdown
           [options]="tiposEnvio"
           formControlName="tipoEnvio"
@@ -18,12 +113,12 @@
           placeholder="Seleccione"
           [showClear]="true">
           </p-dropdown>
+          </div>
           
-          
-          <div class="produccion-titulo">Producción</div> 
 
             <!--Dropdown list--> 
-          <div class="droplist"> 
+          <div class="produccion-fil"> 
+            <label class="produccion-label">Producción</label>
             <p-dropdown 
               [options]="producciones" 
               formControlName="produccionElegida"
@@ -59,7 +154,15 @@
           <!--Panel gastos--> 
           <p-panel class="panel" [toggleable]="false">
             <div class="panel-t">Gastos administrativos</div>
-            <div class="panel-b"></div>
+            <div class="panel-b">
+              <textarea
+              pInputTextarea
+              formControlName="gastosAdministrativos"
+              rows="5"
+              class="panel-textarea"
+              placeholder="Escriba aquí">
+            </textarea>
+            </div>
           </p-panel>
 
         </div> 
@@ -67,11 +170,12 @@
     </div> 
 
     <!--Lado Derecho--> 
-    <div class="flex flex-col gap-5 min-w-0"> 
+    <div class="flex flex-col gap-5 min-w-0 h-full"> 
       <p-fieldset class="w-full" styleClass="fieldset-no-legend" [legend]="''">
 
         <!--Materia prima--> 
-        <div class="produccion-titulo">Materia Prima</div>
+        
+        <div class="section-title">Materia Prima</div>
         <div class="materia-caja">
 
             <!--Cantera--> 
@@ -98,7 +202,7 @@
                </p-dropdown>
             </div>
             
-            <!--Color--> 
+            <!--Color
             <div class="materia-fil">
                 <label class="materia-label">Color</label>
                 <p-dropdown
@@ -109,7 +213,7 @@
                 [showClear]="true">
                </p-dropdown>
             </div>
-
+            --> 
              <!--Costo materia prima--> 
              <div class="costo-ma">
               <label for="costoMateria" class="costo-label">Costo Materia Prima</label>
@@ -173,17 +277,48 @@
               <!--Panel exn-fab--> 
               <p-panel class="panel" [toggleable]="false">
                 <div class="panel-t">exn-fab</div>
-                <div class="panel-b"></div>
+                <div class="panel-b">
+                  <label class="panel-label" for="exnFab">label</label>
+                  <textarea
+                  id="exnFab"
+                  pInputTextarea
+                  formControlName="exnFab"
+                  rows="5"
+                  class="panel-textarea"
+                  placeholder="Escribe aquí">
+                </textarea>
+                </div>
               </p-panel>
               
               <!--Panel flete--> 
               <p-panel class="panel" [toggleable]="false">
                 <div class="panel-t">Flete</div>
-                <div class="panel-b"></div>
+                <div class="panel-b">
+                  <label class="panel-label" for="flete">label</label>
+                  <textarea
+                  id="flete"
+                  pInputTextarea
+                  formControlName="flete"
+                  rows="5"
+                  class="panel-textarea"
+                  placeholder="Escribe aquí">
+                </textarea>
+                </div>
               </p-panel>
             </div>
-
       </p-fieldset>
+      
     </div> 
+    
+    <div class="form-actions col-span-full">
+      <p-button
+      type="submit"
+      label="Guardar"
+      styleClass="p-button-success btn-guardar"
+      [disabled]="formGroup.invalid"
+      (onClick)="botonGuardar()">
+    </p-button>
+  </div>
+
   </div> 
 </form>

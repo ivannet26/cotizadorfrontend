@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
@@ -11,6 +11,14 @@ import { Proceso } from '../../model/Proceso';
 import { Produccion } from '../../model/Produccion';
 import { Opcion } from '../../model/Opcion';
 import { TipoEnvio } from '../../model/TipoEnvio';
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { CotizacionesService } from '../../service/cotizaciones.service';
+import { CotizacionItem } from '../../model/CotizacionItem';
+import { ActivatedRoute } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 // llaves para checkbox embalaje
 type EmbalajeKey = 'java' | 'carton' | 'cajaMadera' | 'caballete';
@@ -25,10 +33,13 @@ type EmbalajeKey = 'java' | 'carton' | 'cajaMadera' | 'caballete';
     InputTextModule,
     FieldsetModule,
     PanelModule,
-    CheckboxModule
+    CheckboxModule,
+    ButtonModule,
+    ToastModule
   ],
   templateUrl: './formulario.component.html',
-  styleUrl: './formulario.component.css'
+  styleUrl: './formulario.component.css',
+  providers: [ConfirmationService, MessageService]
 })
 
 
@@ -40,29 +51,40 @@ export class FormularioComponent implements OnInit {
   // Dropdowns Materia Prima
   canteras: Opcion[] = [];
   tipos: Opcion[] = [];
-  calidades: Opcion[] = [];
   colores:Opcion[]=[];
   embalajes:Opcion[]=[]
   tiposEnvio: TipoEnvio[] = [];
+  editId:string|null=null;
+
 
   //Checkbox Tree
   treeNodes:TreeNode[]=[
     {
       label:'Procesos',
       key: 'procesos',
+      expanded: true,
       children:[
-      { label: 'Corte', key: 'corte' },
-      { label: 'Desdoblado', key: 'desdoblado' },
-      { label: 'Calibrado', key: 'calibrado' },
-      { label: 'Estucado', key: 'estucado' },
+      { label: 'Corte', key: '01' },
+      { label: 'Desdoblado', key: '02' },
+      { label: 'Calibrado', key: '03' },
+      { label: 'Estucado', key: '04' },
+      { label: 'MOSAICOS-RUMI SERVICIO', key: '09' },
+      { label: 'CALIBRADO PLANCHA', key: '10' },
+      { label: 'ESTUCADO PLANCHA', key: '11' },
+      { label: 'PUENTE FRESA', key: '12' },
+      { label: 'Seleccione y Empaque', key: '13' },
+      { label: 'MOSAICO - RUMI PRODUCCION', key: '14' },
+      { label: 'CORTE-TELAR', key: '15' },
 
       {
         label:'Línea',
         key:'linea',
+        expanded: true,
         children:[
-          { label: 'Línea11', key: 'linea11' },
-          { label: 'Línea12', key: 'linea12' },
-          { label: 'Línea13', key: 'linea13' },
+          { label: 'Multidisco', key: '05' },
+          { label: 'Pulido', key: '06' },
+          { label: 'Borde', key: '07' },
+          { label: 'Seleccione y Empaque', key: '08' },
         ]
       }
       ]
@@ -72,7 +94,23 @@ export class FormularioComponent implements OnInit {
   // Nodos seleccionados
   selectedNodes:TreeNode[]=[]; 
 
+  unidadesCantidad = [
+    { label: 'mt2', value: 'mt2' },
+    { label: 'cm', value: 'cm' }
+  ];
+
+
   formGroup = new FormGroup({
+    
+    //primer bloque
+    cantidad: new FormControl<string>('', { nonNullable: true }),
+    unidadCantidad: new FormControl<string>('mt2', { nonNullable: true }),
+    ancho: new FormControl<string>('', { nonNullable: true }),
+    unidadAncho: new FormControl<string>({ value: 'cm', disabled: true } as any, { nonNullable: true }),
+    largo: new FormControl<string>('', { nonNullable: true }),
+    unidadLargo: new FormControl<string>({ value: 'cm', disabled: true } as any, { nonNullable: true }),
+    espesor: new FormControl<string>('', { nonNullable: true }),
+    unidadEspesor: new FormControl<string>({ value: 'cm', disabled: true } as any, { nonNullable: true }),
 
     //columna izquierda
     produccionElegida: new FormControl<Produccion|null>(null),
@@ -93,20 +131,25 @@ export class FormularioComponent implements OnInit {
 
 
     //columna derecha
-    costoMateriaPrima:new FormControl<number>(0,{nonNullable:true})
+    costoMateriaPrima:new FormControl<number>(0,{nonNullable:true}),
+    exnFab: new FormControl('', { nonNullable: true }),
+    flete: new FormControl('', { nonNullable: true }),
+
   });
+
+  constructor(private router: Router,
+    private cotizacionesService: CotizacionesService,
+    private route: ActivatedRoute,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit() {
 
     //datos del formulario
     this.producciones = [
-      { id: '1', descripcion: 'Mosaico' },
-      { id: '2', descripcion: 'Baldosa' },
-      { id: '3', descripcion: 'Filaña' },
-      { id: '4', descripcion: 'Plancha' },
-      { id: '5', descripcion: 'Escalla' },
-      { id: '6', descripcion: 'Ovalin' },
-      { id: '7', descripcion: 'Plancha' }
+      { id: '01', descripcion: 'Mosaico' },
+      { id: '02', descripcion: 'Baldosa' },
+      { id: '03', descripcion: 'Plancha' },
     ];
 
     this.canteras = [
@@ -138,10 +181,22 @@ export class FormularioComponent implements OnInit {
     ];
 
     this.tiposEnvio = [
-      { id: '1', descripcion: 'Opción 1' },
-      { id: '2', descripcion: 'Opción 2' }
+      { id: '1', descripcion: 'Nacional' },
+      { id: '2', descripcion: 'Exportacion' }
     ];
 
+    //primer bloque
+    this.formGroup.addControl('cantidad', new FormControl<string>('', { nonNullable: true }));
+    this.formGroup.addControl('unidadCantidad', new FormControl<string>('mt2', { nonNullable: true }));
+
+    this.formGroup.addControl('ancho', new FormControl<string>('', { nonNullable: true }));
+    this.formGroup.addControl('unidadAncho', new FormControl({ value: 'cm', disabled: true }, { nonNullable: true }));
+
+    this.formGroup.addControl('largo', new FormControl<string>('', { nonNullable: true }));
+    this.formGroup.addControl('unidadLargo', new FormControl({ value: 'cm', disabled: true }, { nonNullable: true }));
+
+    this.formGroup.addControl('espesor', new FormControl<string>('', { nonNullable: true }));
+    this.formGroup.addControl('unidadEspesor', new FormControl({ value: 'cm', disabled: true }, { nonNullable: true }));
 
     // Recalculando el costo de produccion
     this.formGroup.controls.produccionElegida.valueChanges.subscribe(() => {
@@ -181,6 +236,60 @@ export class FormularioComponent implements OnInit {
       this.recalcularCostoMateriaPrima();
     });
 
+    this.route.queryParams.subscribe(params => {
+  const toast = params['toast'];
+
+  if (toast === 'created') {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Guardado',
+      detail: 'Cotización creada'
+    });
+  }
+
+  if (toast === 'updated') {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Actualizado',
+      detail: 'Cotización actualizada'
+    });
+  }
+});
+
+
+    const editId=this.route.snapshot.queryParamMap.get('editId');
+    
+    if (this.editId) {
+      const item = this.cotizacionesService.obtenerPorId(this.editId);
+      
+      if (item) {
+        const tipoEnvioObj = this.tiposEnvio.find(x => x.descripcion === item.tipoEnvio) ?? null;
+        const produccionObj = this.producciones.find(x => x.descripcion === item.produccion) ?? null;
+        const canteraObj = this.canteras.find(x => x.descripcion === item.cantera) ?? null;
+        const tipoObj = this.tipos.find(x => x.descripcion === item.tipoBloque) ?? null;
+        const colorObj = this.colores.find(x => x.descripcion === item.color) ?? null;
+        const emb = (item.embalaje ?? '').toLowerCase();
+        
+        this.formGroup.patchValue({
+          cantidad: item.cantidad,
+          ancho: item.ancho,
+          largo: item.largo,
+          espesor: item.espesor,
+          tipoEnvio: tipoEnvioObj,
+          produccionElegida: produccionObj,
+          cantera: canteraObj,
+          tipo: tipoObj,
+          color: colorObj,
+          costoProduccion: Number(item.costoInicial || 0),
+          costoMateriaPrima: Number(item.costoMateriaPrima || 0),
+          embalajeJava: emb.includes('java'),
+          embalajeCarton: emb.includes('carton'),
+          embalajeCajaMadera: emb.includes('caja'),
+          embalajeCaballete: emb.includes('caballete'),
+        }, { emitEvent: false });
+      }
+    }
+
   }
 
   // Se ejecuta cuando cambia la seleccion del checkbox tree
@@ -190,20 +299,24 @@ export class FormularioComponent implements OnInit {
   }
 
   procesosBaldosa:Proceso[]=[
-    { id: 'corte', nombre: 'Corte', valor: 10 },
-    { id: 'desdoblado', nombre: 'Desdoblado', valor: 15 },
+    { id: '01', nombre: 'Corte', valor: 10 },
+    { id: '02', nombre: 'Desdoblado', valor: 15 },
+    { id: '03', nombre: 'Calibrado', valor: 15 },
+    { id: '04', nombre: 'Estucado', valor: 15 },
     {
       id: 'linea', nombre: 'Línea', valor: 0,
       hijos: [
-        { id: 'linea11', nombre: 'Línea11', valor: 30 }
+         { id: '05', nombre: 'Multidisco', valor: 30 },
+      { id: '06', nombre: 'Pulido', valor: 35 },
+      { id: '07', nombre: 'Borde', valor: 40 },
+      { id: '08', nombre: 'Seleccione y Empaque', valor: 45 },
       ]
     }
   ];
 
   procesosMosaico: Proceso[] = [
-    { id: 'corte', nombre: 'Corte', valor: 10 },
-    { id: 'calibrado', nombre: 'Calibrado', valor: 20 },
-    { id: 'estucado', nombre: 'Estucado', valor: 25 }
+    { id: '09', nombre: 'MOSAICOS-RUMI SERVICIO', valor: 10 },
+    { id: '14', nombre: 'MOSAICO - RUMI PRODUCCION', valor: 20 },
   ];
 
   procesosOtros: Proceso[] = [
@@ -221,6 +334,15 @@ export class FormularioComponent implements OnInit {
     }
   ];
 
+  procesosPlancha: Proceso[] = [
+  { id: '10', nombre: 'CALIBRADO PLANCHA', valor: 15 },
+  { id: '11', nombre: 'ESTUCADO PLANCHA', valor: 20 },
+  { id: '12', nombre: 'PUENTE FRESA', valor: 25 },
+  { id: '13', nombre: 'Seleccione y Empaque', valor: 25 },
+  { id: '15', nombre: 'CORTE-TELAR', valor: 10 },
+];
+
+
 
 
   private getValorProduccion(p:Produccion|null):number{
@@ -230,10 +352,6 @@ export class FormularioComponent implements OnInit {
       case '1': return 10;
       case '2': return 15;
       case '3': return 20;
-      case '4': return 25;
-      case '5': return 30;
-      case '6': return 35;
-      case '7': return 40;
       default: return 0;
     }
   }
@@ -369,6 +487,7 @@ export class FormularioComponent implements OnInit {
       label:'Procesos',
       key:'procesos',
       selectable:false,
+      expanded: true,
       children
     }];
   }
@@ -382,6 +501,7 @@ export class FormularioComponent implements OnInit {
 
     if(p.hijos?.length){
       nodo.children=p.hijos.map(h=>this.procesoANodo(h));
+      nodo.expanded=true;
     }
     return nodo;
   }
@@ -405,17 +525,75 @@ export class FormularioComponent implements OnInit {
 
     let procesos:Proceso[];
 
-    if(desc === 'baldosa'){
-      procesos=this.procesosBaldosa;
-    }else if (desc === 'mosaico') {
-      procesos=this.procesosMosaico;
-    } else {
-      procesos = this.procesosOtros;
-    }
+    if (desc === 'mosaico') {
+    procesos = this.procesosMosaico;
+  } else if (desc === 'baldosa') {
+    procesos = this.procesosBaldosa;
+  } else if (desc === 'plancha') {
+    procesos = this.procesosPlancha; 
+  } else {
+    procesos = [];
+  }
 
      this.treeNodes = this.convertirProcesosATreeNodes(procesos);
      this.cargarValoresProcesos(procesos);
       this.selectedNodes = [];
       this.recalcularCostoProduccion();
   }
+
+  botonGuardar():void{
+    if(this.formGroup.invalid){
+      this.formGroup.markAllAsTouched();
+
+      this.messageService.add({
+        severity:'error',
+        summary:'Error',
+        detail: 'Completa todos los campos'
+      });
+      return;
+    }
+
+    const raw =this.formGroup.getRawValue();
+    const id = this.editId ?? ((crypto as any)?.randomUUID?.() ?? Date.now().toString());
+
+    const item:CotizacionItem={
+      id,
+      cantidad: raw.cantidad,
+      ancho: raw.ancho,
+      largo: raw.largo,
+      espesor: raw.espesor,
+      tipoEnvio: raw.tipoEnvio?.descripcion ?? '',
+      produccion: raw.produccionElegida?.descripcion ?? '',
+      costoInicial: String(raw.costoProduccion),
+      cantera: raw.cantera?.descripcion ?? '',
+      tipoBloque: raw.tipo?.descripcion ?? '',
+      color: raw.color?.descripcion ?? '',
+      costoMateriaPrima: String(raw.costoMateriaPrima), 
+      embalaje: this.embalajeTexto(raw),
+    };
+    
+    if (this.editId) {
+      this.cotizacionesService.actualizar(this.editId, item);
+    } else {
+      this.cotizacionesService.agregar(item);
+    }
+
+    this.router.navigate(['/Home/cotizador/lista'], {
+      queryParams: { toast: this.editId ? 'updated' : 'created' }
+    });
+  }
+
+  private embalajeTexto(raw: any): string {
+    const arr: string[] = [];
+    if (raw.embalajeJava) arr.push('java');
+    if (raw.embalajeCarton) arr.push('carton');
+    if (raw.embalajeCajaMadera) arr.push('caja de madera');
+    if (raw.embalajeCaballete) arr.push('caballete');
+    return arr.join(', ');
+  }
+
+
 }
+
+
+

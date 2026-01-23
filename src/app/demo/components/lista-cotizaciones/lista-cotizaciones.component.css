@@ -1,0 +1,30 @@
+:host ::ng-deep .p-button.p-button-text {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:host ::ng-deep .p-inputtext.ng-invalid.ng-dirty {
+  border-color: var(--surface-border) !important;
+  box-shadow: none !important;
+}
+
+.botones-top{
+  gap: 20px;
+}
+
+.rows-right{
+  margin-left: auto;
+  width: fit-content;
+}
+
+.top-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rows-right{
+  margin-left: auto;
+  width: fit-content;
+}
