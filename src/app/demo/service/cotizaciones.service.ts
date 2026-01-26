@@ -39,4 +39,8 @@ export class CotizacionesService{
         localStorage.setItem(this.storageKey,JSON.stringify(updated));
     }
 
+    obtenerTodos(): CotizacionItem[] {
+        return this.subject.value;
+    }
+
 }

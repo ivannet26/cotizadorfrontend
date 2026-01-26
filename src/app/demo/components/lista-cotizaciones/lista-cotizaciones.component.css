@@ -8,6 +8,33 @@
   box-shadow: none !important;
 }
 
+:host ::ng-deep .tbl-cotizaciones.p-datatable table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: auto;
+}
+
+:host ::ng-deep .tbl-cotizaciones.p-datatable th {
+  padding: 4px 8px;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.2; 
+  vertical-align: middle;
+}
+
+:host ::ng-deep .tbl-cotizaciones.p-datatable td {
+  padding: 3px 8px;
+  font-size: 11px;
+  text-align: center;
+  word-wrap: break-word;
+  vertical-align: middle; 
+}
+
+
+.th-left, .td-left   { text-align: left !important; }
+.th-right, .td-right { text-align: right !important; }
+.th-center, .td-center { text-align: center !important; }
+
 .botones-top{
   gap: 20px;
 }

@@ -1,15 +1,33 @@
 export interface CotizacionItem {
+  //no se muestra
   id: string;
-  cantidad: string;
-  ancho: string;
-  largo: string;
-  espesor: string;
-  tipoEnvio: string;
   produccion: string;
-  costoInicial: string;
+  //color: string;
+  
+  //ids
+  tipoEnvioId: string;
+  produccionId: string;
+  canteraId: string;
+  tipoBloqueId: string;
+
+  //se muestra en la lista de cotizaciones
+  item:string;
+  descripcion:string;
+  tipoEnvio: string;
   cantera: string;
   tipoBloque: string;
-  color: string;
-  costoMateriaPrima: string;
   embalaje: string;
+  unidadMedida:string;
+  cantidad: number;
+
+  //se guarda
+  ancho:number;
+  largo:number;
+  espesor:number;
+  exnFab: string;
+  flete: string;
+  costoInicial: number;
+  costoMateriaPrima: number;
+
+  procesosIds:string[];
 }

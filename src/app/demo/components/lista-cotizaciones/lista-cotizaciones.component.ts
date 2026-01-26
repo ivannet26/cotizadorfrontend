@@ -161,7 +161,7 @@ export class ListaCotizacionesComponent implements OnInit{
       costoInicial: row.costoInicial,
       cantera: row.cantera,
       tipoBloque: row.tipoBloque,
-      color: row.color,
+     // color: row.color,
       costoMateriaPrima: row.costoMateriaPrima,
       embalaje: row.embalaje
     });

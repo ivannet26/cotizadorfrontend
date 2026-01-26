@@ -269,7 +269,16 @@
   font-weight: 600;
 }
 
+.form-actions{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
+.panel-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
 
 
 /* organizacion en formato celular */

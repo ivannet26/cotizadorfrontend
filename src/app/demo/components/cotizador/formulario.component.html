@@ -275,7 +275,7 @@
                 </div>
               
               <!--Panel exn-fab--> 
-              <p-panel class="panel" [toggleable]="false">
+              <p-panel class="panel" [ngClass]="{ 'panel-disabled': formGroup.controls.exnFab.disabled }" [toggleable]="false">
                 <div class="panel-t">exn-fab</div>
                 <div class="panel-b">
                   <label class="panel-label" for="exnFab">label</label>
@@ -291,7 +291,7 @@
               </p-panel>
               
               <!--Panel flete--> 
-              <p-panel class="panel" [toggleable]="false">
+              <p-panel class="panel" [ngClass]="{ 'panel-disabled': formGroup.controls.flete.disabled }" [toggleable]="false">
                 <div class="panel-t">Flete</div>
                 <div class="panel-b">
                   <label class="panel-label" for="flete">label</label>
@@ -312,9 +312,16 @@
     
     <div class="form-actions col-span-full">
       <p-button
+      type="button"
+      label="Ver cotizaciones"
+      styleClass="p-button-sm"
+      (onClick)="goToListaCotizaciones()">
+    </p-button>
+
+      <p-button
       type="submit"
       label="Guardar"
-      styleClass="p-button-success btn-guardar"
+      styleClass="p-button-green btn-guardar"
       [disabled]="formGroup.invalid"
       (onClick)="botonGuardar()">
     </p-button>
