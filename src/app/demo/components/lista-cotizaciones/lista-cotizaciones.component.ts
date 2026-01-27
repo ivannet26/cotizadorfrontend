@@ -15,6 +15,15 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 
+
+//PRUEBA
+import { ViewChild } from '@angular/core';
+import { Table } from 'primeng/table';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FilterService } from 'primeng/api';
+import { OverlayPanel } from 'primeng/overlaypanel';
+
 @Component({
   selector: 'app-lista-cotizaciones',
   standalone: true,
@@ -28,13 +37,33 @@ import { ActivatedRoute } from '@angular/router';
     ReactiveFormsModule,
     ConfirmDialogModule,
     DropdownModule,
-    ToastModule
+    ToastModule,
+
+    //PRUEBA
+    OverlayPanelModule, CheckboxModule
+
   ],
   templateUrl: './lista-cotizaciones.component.html',
   styleUrl: './lista-cotizaciones.component.css',
-  providers: [ConfirmationService,MessageService]
+  providers: [ConfirmationService,MessageService,FilterService]
 })
+
+
 export class ListaCotizacionesComponent implements OnInit{
+
+  //PRUEBA
+  //estado y referencias para el filtro tipo Excel
+  @ViewChild('dt') dt!: Table;
+  @ViewChild('filterPanel') filterPanel!: OverlayPanel; 
+  activeField: keyof CotizacionItem | null = null;
+  options: string[] = [];
+  filteredOptions: string[] = [];
+  filterSearch = '';
+  tempSelection: string[] = [];
+  appliedSelection: Record<string, string[]> = {}; 
+
+
+
   items:CotizacionItem[]=[];
   isEditingAnyRow: boolean = false;
   isNew:boolean=false;
@@ -53,7 +82,9 @@ export class ListaCotizacionesComponent implements OnInit{
     private router:Router,
     private messageService: MessageService,
     private route: ActivatedRoute,
-    private cotizacionesService:CotizacionesService) {
+    private cotizacionesService:CotizacionesService,
+  
+  private filterService: FilterService) {
     this.cotizacionForm = this.fb.group({
       cantidad: ['', Validators.required],
       ancho: ['', Validators.required],
@@ -73,7 +104,10 @@ export class ListaCotizacionesComponent implements OnInit{
   ngOnInit(): void {
     this.cotizacionesService.cotizaciones$.subscribe(data=>{
       this.items=data;
+
     });
+
+
 
     this.route.queryParams.subscribe(params => {
     const toast = params['toast'];
@@ -197,5 +231,77 @@ export class ListaCotizacionesComponent implements OnInit{
       queryParams:{editId:row.id}
     });
   }
+
+
+  //PRUEBA
+  private numericFields = new Set<keyof CotizacionItem>([
+    'item',
+    'cantidad',
+    'costoInicial',
+    'costoMateriaPrima'
+  ]);
+
+
+  //abre el overlay del filtro para la columna seleccionada
+  openFilter(event: Event, field: keyof CotizacionItem) {
+    this.activeField = field;
+    this.buildTextOptions(field);
+    this.filterPanel.toggle(event);
+  }
+  
+  //carga la selección aplicada para la columna
+  private buildTextOptions(field: keyof CotizacionItem) {
+    const raw = (this.items || [])
+    .map(x => (x as any)[field])
+    .filter(v => v !== null && v !== undefined)
+    .map(v => String(v).trim());
+    const uniq = Array.from(new Set(raw));
+    
+    // orden numerico
+    uniq.sort((a, b) => a.localeCompare(b, undefined, {
+       numeric: true, sensitivity: 'base'
+       }));
+       
+       this.options = uniq;
+       this.filteredOptions = [...uniq];
+       this.filterSearch = '';
+       this.tempSelection = [...(this.appliedSelection[field as string] ?? [])];
+      }
+      
+      //filtra las opciones del checklist
+      filterOptions() {
+        const q = (this.filterSearch || '').toLowerCase();
+        this.filteredOptions = this.options.filter(v => v.toLowerCase().includes(q));
+      }
+      
+      //selecciona todas las opciones del checklist
+      selectAllVisible() {
+        const set = new Set(this.tempSelection);
+        this.filteredOptions.forEach(v => set.add(v));
+        this.tempSelection = Array.from(set);
+      }
+      
+      //limpia la selección del filtro
+      clearAll() {
+        this.tempSelection = [];
+      }
+      
+      // aplica el filtro en la columna
+      apply(panel: any) {
+        if (!this.activeField) return;
+        this.appliedSelection[this.activeField as string] = [...this.tempSelection];
+        const field = this.activeField;
+        const valueToFilter = this.tempSelection.length ? (this.numericFields.has(field)
+        ? this.tempSelection.map(v => Number(v))
+        : this.tempSelection) : null;
+        this.dt.filter(valueToFilter, field as string, 'in');
+        panel.hide();
+      }
+
+      
+      cancel(panel: any) {
+        panel.hide();
+      }
+
 
 }
